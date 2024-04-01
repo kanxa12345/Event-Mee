@@ -19,7 +19,7 @@ const Header = () => {
           <nav>
             <ul className="flex items-center gap-8 font-medium">
               <li>
-                <Link href="#">Home</Link>
+                <Link href="/">Home</Link>
               </li>
               <li>
                 <Link href="#">Movies</Link>

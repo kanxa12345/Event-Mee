@@ -6,20 +6,21 @@ const saltRounds = 10;
 
 // register new user
 const registerNewUser = async (req, res) => {
-  try {
-    const existingUser = await User.findOne({ email: req.body.email });
-    if (existingUser) {
-      return res.status(403).json({ msg: "User already exists." });
-    } else {
-      const hashPassword = await bcrypt.hash(req.body.password, saltRounds);
-      req.body.password = hashPassword;
-      req.body.avatar = req.file.filename;
-      await User.create(req.body);
-      res.status(201).json({ msg: "registered successfully!" });
-    }
-  } catch (err) {
-    res.status(400).json({ msg: "Registration failed" });
-  }
+  console.log(req.body)
+  // try {
+  //   const existingUser = await User.findOne({ email: req.body.email });
+  //   if (existingUser) {
+  //     return res.status(403).json({ msg: "User already exists." });
+  //   } else {
+  //     const hashPassword = await bcrypt.hash(req.body.password, saltRounds);
+  //     req.body.password = hashPassword;
+  //     // req.body.avatar = req.file.filename;
+  //     await User.create(req.body);
+  //     res.status(201).json({ msg: "registered successfully!" });
+  //   }
+  // } catch (err) {
+  //   res.status(400).json({ msg: "Registration failed" });
+  // }
 };
 
 module.exports = { registerNewUser };
