@@ -28,13 +28,13 @@ const handleRegister = async (values) => {
     );
     if (response.status === 201) {
       toast.success(response.data.msg);
-      // router.push("/login");
+      router.push("/login");
     } else {
       toast.error(response.data.msg);
     }
   } catch (err) {
-    // toast.error("Failed to register!");
-    console.log(err)
+    toast.error("Failed to register!");
+    // console.log(err)
   }
 };
 
@@ -115,7 +115,10 @@ const Register = () => (
               </button>
               <p className="w-full text-start">
                 Already have an account?{" "}
-                <Link href="#" className="inline-block underline font-medium">
+                <Link
+                  href="/login"
+                  className="inline-block underline font-medium"
+                >
                   Sign In
                 </Link>
               </p>
