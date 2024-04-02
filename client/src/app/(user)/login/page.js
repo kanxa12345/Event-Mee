@@ -6,6 +6,8 @@ import Link from "next/link";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { loginUser } from "@/redux/reducerSlice/userSlice";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -14,14 +16,23 @@ const LoginSchema = Yup.object().shape({
 
 const Login = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+
   const handleLogin = async (values) => {
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/login`,
         values
       );
+      console.log(response);
       if (response.status === 201) {
         toast.success(response.data.msg);
+        dispatch(
+          loginUser({
+            token: response.data.token,
+            userDetail: response.data.userDetail,
+          })
+        );
         router.push("/");
       } else {
         toast.error(response.data.msg);
