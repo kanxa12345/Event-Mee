@@ -13,7 +13,6 @@ const registerNewUser = async (req, res) => {
     } else {
       const hashPassword = await bcrypt.hash(req.body.password, saltRounds);
       req.body.password = hashPassword;
-      // req.body.avatar = req.file.filename;
       await User.create(req.body);
       res.status(201).json({ msg: "registered successfully!" });
     }
