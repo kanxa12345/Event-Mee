@@ -9,9 +9,7 @@ import { useRouter } from "next/navigation";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
-  password: Yup.string()
-    .required("Required")
-    .matches(/[A-Z]/, "Must Contain One Uppercase character"),
+  password: Yup.string().required("Required"),
 });
 
 const Login = () => {
@@ -22,15 +20,14 @@ const Login = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/login`,
         values
       );
-      console.log(response);
       if (response.status === 201) {
         toast.success(response.data.msg);
-        router.push("/login");
+        router.push("/");
       } else {
         toast.error(response.data.msg);
       }
     } catch (err) {
-      toast.error("Failed to register!");
+      toast.error("Failed to login!");
     }
   };
 
