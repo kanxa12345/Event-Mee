@@ -35,10 +35,10 @@ const Header = () => {
           </nav>
           <div>
             <Link
-              href="/register"
+              href="/login"
               className="border border-red-500 py-1 px-2 text-white text-sm bg-red-600"
             >
-              Sign Up
+              Login
             </Link>
           </div>
         </div>
