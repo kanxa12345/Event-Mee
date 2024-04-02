@@ -1,11 +1,12 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SignupSchema = Yup.object().shape({
   fullName: Yup.string()
@@ -23,6 +24,9 @@ const SignupSchema = Yup.object().shape({
 
 const Register = () => {
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const handleRegister = async (values) => {
     try {
       const response = await axios.post(
@@ -59,7 +63,7 @@ const Register = () => {
               resetForm();
             }}
           >
-            {({ errors, touched }) => (
+            {({ errors, touched, values }) => (
               <Form className="flex flex-col items-center gap-5 w-full">
                 <div className="flex flex-col items-start gap-[2px] w-full relative">
                   <label htmlFor="fullName">Full Name</label>
@@ -89,11 +93,25 @@ const Register = () => {
                 <div className="flex flex-col items-start gap-[2px] w-full relative">
                   <label htmlFor="password">Password</label>
                   <Field
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     id="password"
                     className="border border-gray-600 p-1 w-full focus:outline-none"
                   />
+                  {values.password.length > 0 && (
+                    <span
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowPassword(!showPassword);
+                      }}
+                      className="absolute right-2 top-1/2 translate-y-1/2 inline-block cursor-pointer"
+                    >
+                      <FaEye className={`${showPassword ? "" : "hidden"}`} />
+                      <FaEyeSlash
+                        className={`${showPassword ? "hidden" : ""}`}
+                      />
+                    </span>
+                  )}
                   <div className="h-2 text-sm text-red-600 absolute left-0 -bottom-[6px]">
                     {errors.password && touched.password
                       ? errors.password
@@ -103,11 +121,27 @@ const Register = () => {
                 <div className="flex flex-col items-start gap-[2px] w-full relative">
                   <label htmlFor="rePassword">Confirm Password</label>
                   <Field
-                    type="password"
+                    type={showConfirmPassword ? "text" : "password"}
                     name="rePassword"
                     id="rePassword"
                     className="border border-gray-600 p-1 w-full focus:outline-none"
                   />
+                  {values.rePassword.length > 0 && (
+                    <span
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowConfirmPassword(!showConfirmPassword);
+                      }}
+                      className="absolute right-2 top-1/2 translate-y-1/2 inline-block cursor-pointer"
+                    >
+                      <FaEye
+                        className={`${showConfirmPassword ? "" : "hidden"}`}
+                      />
+                      <FaEyeSlash
+                        className={`${showConfirmPassword ? "hidden" : ""}`}
+                      />
+                    </span>
+                  )}
                   <div className="h-2 text-sm text-red-600 absolute left-0 -bottom-[6px]">
                     {errors.rePassword && touched.rePassword
                       ? errors.rePassword

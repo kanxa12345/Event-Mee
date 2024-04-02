@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { loginUser } from "@/redux/reducerSlice/userSlice";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -17,6 +18,7 @@ const LoginSchema = Yup.object().shape({
 const Login = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (values) => {
     try {
@@ -58,7 +60,7 @@ const Login = () => {
               resetForm();
             }}
           >
-            {({ errors, touched }) => (
+            {({ errors, touched, values }) => (
               <Form className="flex flex-col items-center gap-5 w-full">
                 <div className="flex flex-col items-start gap-[2px] w-full relative">
                   <label htmlFor="email">Email</label>
@@ -75,11 +77,25 @@ const Login = () => {
                 <div className="flex flex-col items-start gap-[2px] w-full relative">
                   <label htmlFor="password">Password</label>
                   <Field
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     id="password"
                     className="border border-gray-600 p-1 w-full focus:outline-none"
                   />
+                  {values.password.length > 0 && (
+                    <span
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowPassword(!showPassword);
+                      }}
+                      className="absolute right-2 top-1/2 translate-y-1/2 inline-block cursor-pointer"
+                    >
+                      <FaEye className={`${showPassword ? "" : "hidden"}`} />
+                      <FaEyeSlash
+                        className={`${showPassword ? "hidden" : ""}`}
+                      />
+                    </span>
+                  )}
                   <div className="h-2 text-sm text-red-600 absolute left-0 -bottom-[6px]">
                     {errors.password && touched.password
                       ? errors.password
