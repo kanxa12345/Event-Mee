@@ -5,6 +5,8 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { FaEye, FaEyeSlash, FaUserCircle } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const PasswordSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -14,7 +16,7 @@ const PasswordSchema = Yup.object().shape({
     .matches(/[A-Z]/, "Must Contain One Uppercase character"),
   rePassword: Yup.string()
     .required("Required")
-    .oneOf([Yup.ref("password")], "Passwords does not match"),
+    .oneOf([Yup.ref("newPassword")], "Passwords does not match"),
 });
 
 const Profile = () => {
@@ -24,7 +26,21 @@ const Profile = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleChangePassword = async () => {};
+  const handleChangePassword = async (values) => {
+    try {
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/user`,
+        values
+      );
+      if (response.status === 201) {
+        toast.success(response.data.msg);
+      } else {
+        toast.error(response.data.msg);
+      }
+    } catch (err) {
+      toast.error("Failed to change password!");
+    }
+  };
 
   return (
     <>
@@ -176,7 +192,7 @@ const Profile = () => {
                     type="submit"
                     className="border py-1 px-2 bg-secondColor text-white"
                   >
-                    Change
+                    Update
                   </button>
                 </Form>
               )}

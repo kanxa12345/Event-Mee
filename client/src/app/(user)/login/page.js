@@ -26,7 +26,6 @@ const Login = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/login`,
         values
       );
-      console.log(response);
       if (response.status === 201) {
         toast.success(response.data.msg);
         dispatch(

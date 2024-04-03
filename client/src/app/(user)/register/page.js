@@ -33,7 +33,6 @@ const Register = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/register`,
         values
       );
-      console.log(response);
       if (response.status === 201) {
         toast.success(response.data.msg);
         router.push("/login");
