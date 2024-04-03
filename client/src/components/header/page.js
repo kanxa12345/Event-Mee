@@ -59,7 +59,7 @@ const Header = () => {
                           {userDetail.email}
                         </small>
                       </div>
-                      <Link href="#" className="inline-block w-full">
+                      <Link href="/profile" className="inline-block w-full">
                         Your Profile
                       </Link>
                       <button
