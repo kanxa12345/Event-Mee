@@ -5,9 +5,11 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaRegUserCircle } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { isLogin, userDetail } = useSelector((state) => state.user);
   const [openModal, setOpenModal] = useState(false);
   return (
@@ -62,9 +64,13 @@ const Header = () => {
                       <Link href="/profile" className="inline-block w-full">
                         Your Profile
                       </Link>
+                      <Link href="#" className="inline-block w-full">
+                        Your Show
+                      </Link>
                       <button
                         onClick={() => {
                           dispatch(logoutUser());
+                          router.push("/");
                         }}
                         className="w-full text-start"
                       >
