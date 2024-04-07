@@ -1,6 +1,6 @@
-# Rock-Rift
+# Event-Mee
 
-Event-Mee is a full stack e-commerce site built with Node.js, Express, MongoDB & Next.js for booking ticket for show as well as list our show.
+Event-Mee is a full stack e-commerce site built with Node.js, Express, MongoDB & Next.js for booking ticket for show as well as list your own show.
 
 ___
 
