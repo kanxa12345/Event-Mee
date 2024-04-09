@@ -8,7 +8,7 @@ const showSchema = new Schema({
   pricePerTicket: Number,
   description: String,
   startTime: Number,
-  showTime: Number,
+  endTime: Number,
 });
 
 const Show = mongoose.model("Show", showSchema);
