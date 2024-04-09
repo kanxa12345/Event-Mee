@@ -2,24 +2,31 @@ const Show = require("../models/showModel");
 
 const createEvent = async (req, res) => {
   try {
-    const existingEvent = await Show.findOne({ showName: req.body.showName });
-    if (existingEvent) {
-      return res.status(403).json({ msg: "Event already exists." });
+    const existingUserEvent = await Show.findOne({ userId: req.body.userId });
+    if (existingUserEvent) {
+      existingUserEvent.events.push(req.body.event);
+      await existingUserEvent.save();
     } else {
-      await Show.create(req.body);
-      res.status(201).json({ msg: "Event added successfully!" });
+      await Show.create({
+        userId: req.body.userId,
+        events: [req.body.event],
+      });
     }
+    res.status(201).json({ msg: "Event added successfully!" });
   } catch (err) {
-    res.status(400).json({ msg: "Failed to add event" });
+    console.log(err);
   }
 };
 
 const getAllEvents = async (req, res) => {
   try {
-    const events = await Show.find();
-    res.json(events);
+    const existingUserEvent = await Show.findOne({ userId: req.query.userId });
+    if (existingUserEvent) {
+      const eventList = existingUserEvent.events;
+      res.json(eventList);
+    }
   } catch (err) {
-    res.status(400).json({ msg: "Failed to fetch events" });
+    console.log(err);
   }
 };
 

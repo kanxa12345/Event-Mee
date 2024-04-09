@@ -4,6 +4,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 
 const ShowSchema = Yup.object().shape({
@@ -21,12 +22,13 @@ const ShowSchema = Yup.object().shape({
 
 const Show = () => {
   const router = useRouter();
+  const { userDetail } = useSelector((state) => state.user);
 
   const handleAddEvent = async (values) => {
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/event`,
-        values
+        { userId: userDetail._id, event: values }
       );
       if (response.status === 201) {
         toast.success(response.data.msg);

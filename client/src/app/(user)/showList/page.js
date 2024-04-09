@@ -2,13 +2,15 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const ShowList = () => {
   const [events, setEvents] = useState([]);
+  const { userDetail } = useSelector((state) => state.user);
   const fetchEvents = async (values) => {
     try {
       const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/events`
+        `${process.env.NEXT_PUBLIC_API_URL}/events?userId=${userDetail._id}`
       );
       setEvents(data);
     } catch (err) {
@@ -25,20 +27,29 @@ const ShowList = () => {
       <section className="py-24 bg-gray-50">
         <div className="container">
           {events.length > 0 ? (
-            <div className="w-full">
-              <table className="w-full border" border>
+            <div className="w-full space-y-6">
+              <div className="w-full flex items-start gap-10 justify-between">
+                <h2 className="text-4xl font-semibold">Event List</h2>
+                <Link
+                  href="/show"
+                  className="inline-block py-1 px-2 bg-secondColor text-white"
+                >
+                  Add More Event
+                </Link>
+              </div>
+              <table className="w-full border border-gray-500">
                 <thead>
-                  <tr className="border">
+                  <tr className="border border-gray-500">
                     <th>S.N.</th>
                     <th>Event Name</th>
                     <th>Event Type</th>
                     <th>Place</th>
-                    <th>Price per event</th>
+                    <th>Price per ticket</th>
                   </tr>
                 </thead>
                 <tbody>
                   {events?.map((item, id) => (
-                    <tr key={id} className="border">
+                    <tr key={id} className="border border-gray-500">
                       <td>{id + 1}</td>
                       <td>{item.showName}</td>
                       <td>{item.showType}</td>
