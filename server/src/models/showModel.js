@@ -3,12 +3,13 @@ const { Schema } = mongoose;
 
 const showSchema = new Schema({
   showName: String,
-  showType: String,
+  showType: [String],
   place: String,
-  pricePerTicket: Number,
+  price: Number,
+  date: String,
+  startTime: String,
+  endTime: String,
   description: String,
-  startTime: Number,
-  endTime: Number,
 });
 
 const Show = mongoose.model("Show", showSchema);

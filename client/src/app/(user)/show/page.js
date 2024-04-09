@@ -1,24 +1,22 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import Link from "next/link";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 const ShowSchema = Yup.object().shape({
-  // fullName: Yup.string()
-  //   .min(2, "Too Short!")
-  //   .max(50, "Too Long!")
-  //   .required("Required"),
-  // email: Yup.string().email("Invalid email").required("Required"),
-  // password: Yup.string()
-  //   .required("Required")
-  //   .matches(/[A-Z]/, "Must Contain One Uppercase character"),
-  // rePassword: Yup.string()
-  //   .required("Required")
-  //   .oneOf([Yup.ref("password")], "Passwords does not match"),
+  showName: Yup.string().required("Required"),
+  showType: Yup.array()
+    .min(1, "Select at least one option")
+    .required("Required"),
+  place: Yup.string().required("Required"),
+  price: Yup.number().required("Required"),
+  date: Yup.string().required("Required"),
+  startTime: Yup.string().required("Required"),
+  endTime: Yup.string().required("Required"),
+  description: Yup.string().required("Required"),
 });
 
 const Show = () => {
@@ -27,17 +25,17 @@ const Show = () => {
   const handleRegister = async (values) => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/register`,
+        `${process.env.NEXT_PUBLIC_API_URL}/show`,
         values
       );
       if (response.status === 201) {
         toast.success(response.data.msg);
-        router.push("/login");
+        router.push("/showList");
       } else {
         toast.error(response.data.msg);
       }
     } catch (err) {
-      toast.error("Failed to register!");
+      toast.error("Failed to add event!");
     }
   };
 
@@ -49,9 +47,10 @@ const Show = () => {
           <Formik
             initialValues={{
               showName: "",
-              showType: "",
+              showType: [],
               place: "",
               price: "",
+              date: "",
               startTime: "",
               endTime: "",
               description: "",
@@ -100,17 +99,30 @@ const Show = () => {
                       className="flex items-center gap-4"
                     >
                       <label className="flex items-center gap-1">
-                        <Field type="checkbox" name="checked" value="One" />
+                        <Field type="checkbox" name="showType" value="Party" />
                         Party
                       </label>
                       <label className="flex items-center gap-1">
-                        <Field type="checkbox" name="checked" value="Two" />
+                        <Field
+                          type="checkbox"
+                          name="showType"
+                          value="Comedy Show"
+                        />
                         Comedy Show
                       </label>
                       <label className="flex items-center gap-1">
-                        <Field type="checkbox" name="checked" value="Three" />
+                        <Field
+                          type="checkbox"
+                          name="showType"
+                          value="Concert"
+                        />
                         Concert
                       </label>
+                    </div>
+                    <div className="h-2 text-sm text-red-600 absolute left-0 -bottom-[6px]">
+                      {errors.showType && touched.showType
+                        ? errors.showType
+                        : null}
                     </div>
                   </div>
                   <div className="flex flex-col items-start gap-[2px] w-1/2 relative">
@@ -170,7 +182,8 @@ const Show = () => {
                 </div>
                 <div className="flex flex-col items-start gap-[2px] w-full relative">
                   <label htmlFor="description">Description</label>
-                  <textarea
+                  <Field
+                    as="textarea"
                     type="text"
                     name="description"
                     id="description"
