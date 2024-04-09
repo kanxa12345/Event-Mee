@@ -2,11 +2,14 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
+import { HiDotsVertical } from "react-icons/hi";
 import { useSelector } from "react-redux";
 
 const ShowList = () => {
   const [events, setEvents] = useState([]);
   const { userDetail } = useSelector((state) => state.user);
+  const [openAction, setOpenAction] = useState(null);
+
   const fetchEvents = async (values) => {
     try {
       const { data } = await axios.get(
@@ -18,9 +21,27 @@ const ShowList = () => {
     }
   };
 
+  const handleDelete = async (eventId) => {
+    try {
+      const response = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/event/${userDetail._id}?eventId=${eventId}`
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchEvents();
-  }, []);
+  }, [handleDelete]);
+
+  const handleAction = (num) => {
+    if (openAction === null || openAction !== num) {
+      setOpenAction(num);
+    } else if (openAction === num) {
+      setOpenAction(null);
+    }
+  };
 
   return (
     <>
@@ -45,6 +66,7 @@ const ShowList = () => {
                     <th>Event Type</th>
                     <th>Place</th>
                     <th>Price per ticket</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -55,6 +77,35 @@ const ShowList = () => {
                       <td>{item.showType}</td>
                       <td>{item.place}</td>
                       <td>{item.price}</td>
+                      <td className="relative">
+                        <HiDotsVertical
+                          onClick={() => handleAction(id)}
+                          className="cursor-pointer"
+                        />
+                        {openAction === id && (
+                          <div className="absolute flex flex-col items-start w-32 gap-2 p-3 bg-gray-50 shadow-md z-10 top-10 -left-16">
+                            <button
+                              onClick={() => {
+                                // fetchProductDetail(item._id);
+                                // setOpenEditForm(id);
+                                setOpenAction(null);
+                              }}
+                              className="w-full text-start"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => {
+                                handleDelete(item._id);
+                                setOpenAction(null);
+                              }}
+                              className="w-full text-start"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

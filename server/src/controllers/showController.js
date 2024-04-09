@@ -30,4 +30,19 @@ const getAllEvents = async (req, res) => {
   }
 };
 
-module.exports = { createEvent, getAllEvents };
+const deleteEventById = async (req, res) => {
+  try {
+    const existingUserEvent = await Show.findOne({ userId: req.params.userId });
+    if (existingUserEvent) {
+      const eventList = existingUserEvent.events.filter(
+        (item) => item._id != req.query.eventId
+      );
+      existingUserEvent.events = eventList;
+      await existingUserEvent.save();
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports = { createEvent, getAllEvents, deleteEventById };
