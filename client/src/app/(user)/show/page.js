@@ -22,10 +22,10 @@ const ShowSchema = Yup.object().shape({
 const Show = () => {
   const router = useRouter();
 
-  const handleRegister = async (values) => {
+  const handleAddEvent = async (values) => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/show`,
+        `${process.env.NEXT_PUBLIC_API_URL}/event`,
         values
       );
       if (response.status === 201) {
@@ -57,7 +57,7 @@ const Show = () => {
             }}
             validationSchema={ShowSchema}
             onSubmit={(values, { resetForm }) => {
-              handleRegister(values);
+              handleAddEvent(values);
               resetForm();
             }}
           >

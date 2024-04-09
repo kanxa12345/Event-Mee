@@ -1,6 +1,6 @@
 const Show = require("../models/showModel");
 
-const createShow = async (req, res) => {
+const createEvent = async (req, res) => {
   try {
     const existingEvent = await Show.findOne({ showName: req.body.showName });
     if (existingEvent) {
@@ -14,4 +14,13 @@ const createShow = async (req, res) => {
   }
 };
 
-module.exports = { createShow };
+const getAllEvents = async (req, res) => {
+  try {
+    const events = await Show.find();
+    res.json(events);
+  } catch (err) {
+    res.status(400).json({ msg: "Failed to fetch events" });
+  }
+};
+
+module.exports = { createEvent, getAllEvents };
