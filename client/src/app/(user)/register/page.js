@@ -7,6 +7,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Image from "next/image";
 
 const SignupSchema = Yup.object().shape({
   fullName: Yup.string()
@@ -47,7 +48,7 @@ const Register = () => {
   return (
     <section className="py-24 bg-gray-50">
       <div className="container flex justify-center">
-        <div className="flex flex-col items-center gap-8 w-1/3 p-8 shadow-lg bg-white">
+        <div className="flex flex-col items-center gap-6 w-1/3 p-8 shadow-lg bg-white">
           <h2 className="text-3xl font-semibold">Sign Up</h2>
           <Formik
             initialValues={{
@@ -153,18 +154,37 @@ const Register = () => {
                 >
                   Register
                 </button>
-                <p className="w-full text-start">
-                  Already have an account?{" "}
-                  <Link
-                    href="/login"
-                    className="inline-block underline font-medium"
-                  >
-                    Sign In
-                  </Link>
-                </p>
               </Form>
             )}
           </Formik>
+          <p className="w-full text-start">
+            Already have an account?{" "}
+            <Link href="/login" className="inline-block underline font-medium">
+              Sign In
+            </Link>
+          </p>
+          <div className="w-full flex items-center gap-3">
+            Sign up with
+            <div className="flex gap-1 items-center">
+              <button>
+                <Image
+                  src="/images/google.webp"
+                  height={25}
+                  width={25}
+                  alt="google icon"
+                />
+              </button>
+              or
+              <button>
+                <Image
+                  src="/images/facebook.webp"
+                  height={27}
+                  width={27}
+                  alt="google icon"
+                />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
