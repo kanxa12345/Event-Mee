@@ -12,8 +12,11 @@ import {
   IoSettingsOutline,
   IoChatbubbleEllipsesOutline,
 } from "react-icons/io5";
+import { useSession } from "next-auth/react";
 
 const Header = () => {
+  const { session } = useSession();
+  console.log(session);
   const dispatch = useDispatch();
   const router = useRouter();
   const { isLogin, userDetail } = useSelector((state) => state.user);

@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { loginUser } from "@/redux/reducerSlice/userSlice";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Image from "next/image";
+import { signIn } from "next-auth/react";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -46,7 +48,7 @@ const Login = () => {
   return (
     <section className="py-24 bg-gray-50">
       <div className="container flex justify-center">
-        <div className="flex flex-col items-center gap-8 w-1/3 p-8 shadow-lg bg-white">
+        <div className="flex flex-col items-center gap-6 w-1/3 p-8 shadow-lg bg-white">
           <h2 className="text-3xl font-semibold">Sign In</h2>
           <Formik
             initialValues={{
@@ -107,18 +109,35 @@ const Login = () => {
                 >
                   Login
                 </button>
-                <p className="w-full text-start">
-                  Already have an account?{" "}
-                  <Link
-                    href="/register"
-                    className="inline-block underline font-medium"
-                  >
-                    Create New
-                  </Link>
-                </p>
               </Form>
             )}
           </Formik>
+          <p className="w-full text-start">
+            Don&apos;t have an account?{" "}
+            <Link
+              href="/register"
+              className="inline-block underline font-medium"
+            >
+              Create New
+            </Link>
+          </p>
+          <div className="w-full flex items-center gap-3">
+            <button
+              onClick={() =>
+                signIn("google", {
+                  callbackUrl: `/`,
+                })
+              }
+            >
+              <Image
+                src="/images/google.webp"
+                height={25}
+                width={25}
+                alt="google icon"
+              />
+              Sign in with Google
+            </button>
+          </div>
         </div>
       </div>
     </section>
